@@ -3,9 +3,9 @@ n = 5
 
 
 class Field:
-    def __init__(self, *coordinates):
+    def __init__(self, *characters):
         self.matrix = []
-        self.list = [*coordinates]
+        self.list = [*characters]
 
     def render(self):
         for i in range(n):
@@ -22,20 +22,39 @@ class Field:
 
 class Character:
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.sign = 1
+        self.__x = x
+        self.__y = y
+        self.__sign = 1
+
+    @property
+    def x(self):
+        return self.__x
+
+    @property
+    def y(self):
+        return self.__y
+
+    @property
+    def sign(self):
+        return self.__sign
+
+    @sign.setter
+    def sign(self, sign):
+        if sign == 1:
+            self.__sign = sign
+        else:
+            print("Here can be only 1")
 
     def move(self, matrix, obstacle):
         direction = input(f'Choose direction where you want to go, Player {self.sign}: ')
         if direction == 'w' and self.y != 0 and matrix[self.y-1][self.x] != obstacle.sign:
-            self.y -= 1
+            self.__y -= 1
         elif direction == 's' and self.y != n-1 and matrix[self.y+1][self.x] != obstacle.sign:
-            self.y += 1
+            self.__y += 1
         elif direction == 'a' and self.x != 0 and matrix[self.y][self.x-1] != obstacle.sign:
-            self.x -= 1
+            self.__x -= 1
         elif direction == 'd' and self.x != n-1 and matrix[self.y][self.x+1] != obstacle.sign:
-            self.x += 1
+            self.__x += 1
         elif ((self.y == 0 or matrix[self.y-1][self.x] == obstacle.sign) and direction == 'w') or \
                 ((self.y == n-1 or matrix[self.y+1][self.x] == obstacle.sign) and direction == 's') or \
                 ((self.x == 0 or matrix[self.y][self.x-1] == obstacle.sign) and direction == 'a') or \
@@ -48,7 +67,18 @@ class Character:
 class Outsider(Character):
     def __init__(self, x, y):
         super(Outsider, self).__init__(x, y)
-        self.sign = 2
+        self.__sign = 2
+
+    @property
+    def sign(self):
+        return self.__sign
+
+    @sign.setter
+    def sign(self, sign):
+        if sign == 2:
+            self.__sign = sign
+        else:
+            print("Here can be only 2")
 
 
 def main():
